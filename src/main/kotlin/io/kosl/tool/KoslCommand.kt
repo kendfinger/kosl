@@ -4,10 +4,11 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.enum
-import io.kosl.build.BuildEngineJob
 import io.kosl.build.BuildEngines
-import io.kosl.config.ServiceDescription
-import io.kosl.config.WorkspaceDescription
+import io.kosl.spec.ServiceSpec
+import io.kosl.spec.WorkspaceSpec
+import io.kosl.spec.render
+import io.kosl.state.ServiceState
 import java.nio.file.Paths
 
 class KoslCommand: CliktCommand() {
@@ -16,23 +17,11 @@ class KoslCommand: CliktCommand() {
     .default(BuildEngines.DockerBuild)
 
   override fun run() {
-    val workspace = WorkspaceDescription.loadFromPath("kosl-workspace.json")
+    val workspaceSpec = WorkspaceSpec.loadFromPath("kosl-workspace.json")
+    val workspace = workspaceSpec.render()
 
-    for (serviceName in workspace.services) {
-      val serviceDirectoryPath = Paths.get(serviceName)
-      val serviceDescriptionPath = serviceDirectoryPath.resolve("kosl-service.json")
-      val service = ServiceDescription.loadFromPath(serviceDescriptionPath)
-      val buildFilePath = serviceDirectoryPath.resolve(service.build.file)
-
-      val imageName = "${workspace.defaultImagePrefix}/${service.build.image}"
-
-      val job = BuildEngineJob(
-        serviceDirectoryPath,
-        buildFilePath,
-        imageName
-      )
-
-      buildEngine.engine.build(job)
+    for (service in workspace.services) {
+      buildEngine.engine.build(service.createBuildJob())
     }
   }
 }

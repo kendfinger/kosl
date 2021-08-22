@@ -1,4 +1,4 @@
-package io.kosl.config
+package io.kosl.spec
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
@@ -7,7 +7,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
-open class KoslModel<T>(private val serializer: KSerializer<T>) {
+open class KoslSpec<T>(private val serializer: KSerializer<T>) {
   private val json = Json {}
 
   fun loadFromPath(path: Path): T {

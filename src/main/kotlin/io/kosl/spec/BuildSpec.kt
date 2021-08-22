@@ -1,12 +1,12 @@
-package io.kosl.config
+package io.kosl.spec
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
 
 @Serializable
-class BuildDescription(
+class BuildSpec(
   val file: String = "Dockerfile",
   val image: String
 ) {
-  companion object : KoslModel<BuildDescription>(serializer())
+  companion object : KoslSpec<BuildSpec>(serializer())
 }
