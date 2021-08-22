@@ -9,7 +9,7 @@ class GenerateKubernetesCommand: CliktCommand(name = "generate-kubernetes", help
 
   override fun run() {
     for (service in context.workspace.services) {
-      val deployment = service.renderKubernetesYaml()
+      val deployment = service.renderKubernetesResource()
       println(Serialization.asYaml(deployment).trim())
     }
   }

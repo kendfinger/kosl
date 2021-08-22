@@ -21,7 +21,7 @@ class ServiceState(
     imageName
   )
 
-  fun renderKubernetesYaml(): Deployment {
+  fun renderKubernetesResource(): Deployment {
     return DeploymentBuilder()
       .withNewMetadata()
         .withName(spec.name)
