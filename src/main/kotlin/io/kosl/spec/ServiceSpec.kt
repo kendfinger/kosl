@@ -5,7 +5,9 @@ import kotlinx.serialization.serializer
 
 @Serializable
 class ServiceSpec(
-  val build: BuildSpec
+  val name: String,
+  val build: BuildSpec,
+  val deployment: DeploymentSpec
 ) {
   companion object : KoslSpec<ServiceSpec>(serializer())
 }

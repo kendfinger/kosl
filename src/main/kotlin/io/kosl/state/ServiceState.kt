@@ -1,5 +1,7 @@
 package io.kosl.state
 
+import io.fabric8.kubernetes.api.model.apps.Deployment
+import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder
 import io.kosl.build.BuildEngineJob
 import io.kosl.spec.ServiceSpec
 import io.kosl.spec.WorkspaceSpec
@@ -18,4 +20,24 @@ class ServiceState(
     buildFilePath,
     imageName
   )
+
+  fun renderKubernetesYaml(): Deployment {
+    return DeploymentBuilder()
+      .withNewMetadata()
+        .withName(spec.name)
+      .endMetadata()
+      .withNewSpec()
+        .withReplicas(spec.deployment.replicas)
+        .withNewTemplate()
+          .withNewSpec()
+            .addNewContainer()
+              .withName("service")
+              .withImage(imageName)
+              .withImagePullPolicy("Always")
+            .endContainer()
+          .endSpec()
+        .endTemplate()
+      .endSpec()
+      .build()
+  }
 }

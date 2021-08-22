@@ -1,5 +1,9 @@
 {
+  "name": "dart-server",
   "build": {
     "image": "dart-server"
+  },
+  "deployment": {
+    "replicas": 3
   }
 }

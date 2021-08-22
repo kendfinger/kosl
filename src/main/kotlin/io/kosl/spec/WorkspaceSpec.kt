@@ -4,6 +4,7 @@ import io.kosl.state.ServiceState
 import io.kosl.state.WorkspaceState
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
+import java.nio.file.Path
 import java.nio.file.Paths
 
 @Serializable
@@ -14,12 +15,12 @@ class WorkspaceSpec(
   companion object : KoslSpec<WorkspaceSpec>(serializer())
 }
 
-fun WorkspaceSpec.render(): WorkspaceState {
+fun WorkspaceSpec.render(workspaceDirectoryPath: Path): WorkspaceState {
   val serviceStates = mutableListOf<ServiceState>()
   for (serviceName in services) {
-    val serviceDirectoryPath = Paths.get(serviceName)
-    val serviceDescriptionPath = serviceDirectoryPath.resolve("kosl-service.json")
-    val service = ServiceSpec.loadFromPath(serviceDescriptionPath)
+    val serviceDirectoryPath = workspaceDirectoryPath.resolve(serviceName)
+    val serviceSpecPath = serviceDirectoryPath.resolve("kosl-service.json")
+    val service = ServiceSpec.loadFromPath(serviceSpecPath)
     val serviceState = ServiceState(this, service, serviceDirectoryPath)
     serviceStates.add(serviceState)
   }
