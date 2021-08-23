@@ -23,8 +23,6 @@ jobs:
       id: docker_meta
       with:
         images: ghcr.io/kendfinger/kosl
-        tags: |
-          type=sha,enable=true,format=long,prefix=sha-
     - name: Login to GitHub Container Registry
       uses: docker/login-action@v1
       id: docker_login
