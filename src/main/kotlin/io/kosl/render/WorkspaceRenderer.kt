@@ -4,23 +4,23 @@ import io.kosl.spec.ServiceSpec
 import io.kosl.spec.WorkspaceSpec
 import io.kosl.state.ServiceState
 import io.kosl.state.WorkspaceState
-import io.kosl.tool.KoslContext
+import io.kosl.context.KoslContext
 
-object WorkspaceRenderer {
-  fun render(spec: WorkspaceSpec, context: KoslContext): WorkspaceState {
+class WorkspaceRenderer(val context: KoslContext) {
+  fun render(spec: WorkspaceSpec): WorkspaceState {
     val serviceStates = mutableListOf<ServiceState>()
     for (serviceName in spec.services) {
       val serviceDirectoryPath = context.workspaceDirectoryPath.resolve(serviceName)
       val serviceSpecPath = serviceDirectoryPath.resolve("kosl-service.json")
       val service = ServiceSpec.loadFromPath(serviceSpecPath)
-      val serviceState = ServiceState(spec, service, serviceDirectoryPath)
+      val serviceState = ServiceState(context, spec, service, serviceDirectoryPath)
       serviceStates.add(serviceState)
     }
     return WorkspaceState(
+      context,
       spec,
-      context.workspaceDirectoryPath,
       serviceStates,
-      spec.defaultImagePrefix
+      context.overrideImagePrefix ?: spec.defaultImagePrefix
     )
   }
 }

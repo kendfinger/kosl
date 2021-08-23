@@ -1,30 +1,30 @@
 package io.kosl.build
 
-import io.kosl.util.executeInteractiveProcess
+import io.kosl.context.KoslContext
 import kotlin.io.path.absolutePathString
 
 class DockerBuildEngine: BuildEngine {
-  override fun process(job: BuildEngineJob) {
+  override fun process(context: KoslContext, job: BuildEngineJob) {
     val buildCommand = mutableListOf(
       "docker",
       "build",
       "-t",
-      job.targetImageName,
+      "${job.targetImageName}:${job.targetImageTag}",
       "-f",
       job.buildFilePath.absolutePathString(),
       job.contextDirectoryPath.absolutePathString()
     )
 
-    executeInteractiveProcess(buildCommand)
+    context.executeInteractiveProcess(buildCommand)
 
     if (job.push) {
       val pushCommand = mutableListOf(
         "docker",
         "push",
-        job.targetImageName
+        "${job.targetImageName}:${job.targetImageTag}"
       )
 
-      executeInteractiveProcess(pushCommand)
+      context.executeInteractiveProcess(pushCommand)
     }
   }
 }

@@ -4,9 +4,11 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.findOrSetObject
 import com.github.ajalt.clikt.core.subcommands
 import com.github.ajalt.clikt.parameters.options.default
+import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.enum
 import com.github.ajalt.clikt.parameters.types.path
+import io.kosl.context.KoslContext
 import io.kosl.build.BuildEngines
 import io.kosl.render.WorkspaceRenderer
 import io.kosl.spec.WorkspaceSpec
@@ -20,22 +22,34 @@ class KoslCommand: CliktCommand() {
     )
   }
 
-  val buildEngine by option("-b", "--build-engine")
+  val buildEngine by option("-b", "--build-engine", help = "Container Build Engine")
     .enum<BuildEngines> { it.id }
     .default(BuildEngines.DockerBuild)
 
-  val workspaceDirectoryPath by option("-w", "--workspace")
+  val workspaceDirectoryPath by option("-w", "--workspace", help = "Path to Workspace")
     .path(mustExist = true, canBeFile = false)
     .default(Paths.get(""))
+
+  val tag by option("-t", "--tag", help = "Image Tag")
+    .default("latest")
+
+  val overrideImagePrefix by option("-P", "--image-prefix", help = "Override Image Prefix")
+
+  val isDryRun by option("--dry-run", help = "Perform a Dry Run")
+    .flag()
 
   val context by findOrSetObject { KoslContext() }
 
   override fun run() {
     context.workspaceDirectoryPath = workspaceDirectoryPath
+    context.isDryRun = isDryRun
+    context.overrideImagePrefix = overrideImagePrefix
+    context.tag = tag
 
     val workspaceSpecPath = workspaceDirectoryPath.resolve("kosl-workspace.json")
     val workspaceSpec = WorkspaceSpec.loadFromPath(workspaceSpecPath)
-    context.workspace = WorkspaceRenderer.render(workspaceSpec, context)
+    val workspaceRenderer = WorkspaceRenderer(context)
+    context.workspaceState = workspaceRenderer.render(workspaceSpec)
     context.buildEngine = buildEngine.engine
   }
 }
