@@ -6,8 +6,8 @@ import kotlin.io.path.relativeTo
 import kotlin.system.exitProcess
 
 class BuildKitEngine: BuildEngine {
-  override fun build(job: BuildEngineJob) {
-    val command = listOf(
+  override fun process(job: BuildEngineJob) {
+    val command = mutableListOf(
       "buildctl",
       "build",
       "--progress",
@@ -21,7 +21,7 @@ class BuildKitEngine: BuildEngine {
       "--opt",
       "source=${job.buildFilePath.relativeTo(job.contextDirectoryPath).absolutePathString()}",
       "--output",
-      "type=image,name=${job.targetImageName}"
+      "type=image,name=${job.targetImageName},push=${job.push}"
     )
 
     executeInteractiveProcess(command)

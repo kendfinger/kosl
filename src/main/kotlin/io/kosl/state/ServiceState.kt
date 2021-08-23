@@ -15,10 +15,11 @@ class ServiceState(
   val buildFilePath: Path = serviceDirectoryPath.resolve(spec.build.file)
   val imageName: String = "${workspaceSpec.defaultImagePrefix}/${spec.build.image}"
 
-  fun createBuildJob(): BuildEngineJob = BuildEngineJob(
+  fun createBuildJob(push: Boolean = false): BuildEngineJob = BuildEngineJob(
     serviceDirectoryPath,
     buildFilePath,
-    imageName
+    imageName,
+    push
   )
 
   fun renderKubernetesResource(): Deployment {

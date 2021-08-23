@@ -5,5 +5,6 @@ import java.nio.file.Path
 class BuildEngineJob(
   val contextDirectoryPath: Path,
   val buildFilePath: Path,
-  val targetImageName: String
+  val targetImageName: String,
+  val push: Boolean
 )

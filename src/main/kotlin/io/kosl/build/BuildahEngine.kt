@@ -4,8 +4,8 @@ import io.kosl.util.executeInteractiveProcess
 import kotlin.io.path.absolutePathString
 
 class BuildahEngine: BuildEngine {
-  override fun build(job: BuildEngineJob) {
-    val command = listOf(
+  override fun process(job: BuildEngineJob) {
+    val buildCommand = mutableListOf(
       "buildah",
       "bud",
       "-t",
@@ -15,6 +15,16 @@ class BuildahEngine: BuildEngine {
       job.contextDirectoryPath.absolutePathString()
     )
 
-    executeInteractiveProcess(command)
+    executeInteractiveProcess(buildCommand)
+
+    if (job.push) {
+      val pushCommand = mutableListOf(
+        "buildah",
+        "push",
+        job.targetImageName
+      )
+
+      executeInteractiveProcess(pushCommand)
+    }
   }
 }
