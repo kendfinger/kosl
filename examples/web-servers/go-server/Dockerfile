@@ -1,4 +1,4 @@
-FROM golang:1.17 AS build
+FROM docker.io/library/golang:1.17 AS build
 WORKDIR /src
 ENV CGO_ENABLED=0
 COPY server.go /src

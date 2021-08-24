@@ -23,6 +23,10 @@ class BuildKitEngine: BuildEngine {
       "type=image,name=${job.targetImageName}:${job.targetImageTag},push=${job.push}"
     )
 
+    if (System.getenv("KOSL_BUILDKIT_USE_SUDO") == "true") {
+      command.add(0, "sudo")
+    }
+
     context.executeInteractiveProcess(command)
   }
 }
