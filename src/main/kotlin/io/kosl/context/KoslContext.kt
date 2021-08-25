@@ -29,7 +29,7 @@ class KoslContext {
     println("${prefix}$ ${command.joinToString(" ")}")
   }
 
-  fun executeInteractiveProcess(command: List<String>, cwd: Path? = null, run: CommandRunState = CommandRunState.Automatic) {
+  fun executeInteractiveProcess(command: List<String>, run: CommandRunState = CommandRunState.Automatic) {
     logCommandExecution(command, ran = run)
     if ((run == CommandRunState.Automatic && isDryRun) || run == CommandRunState.DryRun) {
       return
@@ -37,10 +37,6 @@ class KoslContext {
 
     val builder = ProcessBuilder(command)
       .inheritIO()
-
-    if (cwd != null) {
-      builder.directory(cwd.toFile())
-    }
 
     val process = builder.start()
     val exitCode = process.waitFor()

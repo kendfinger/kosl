@@ -11,14 +11,10 @@ open class KoslSpec<T>(private val serializer: KSerializer<T>) {
   private val json = Json {}
 
   fun loadFromPath(path: Path): T {
-    return json.decodeFromString(serializer, Files.readString(path, StandardCharsets.UTF_8))
+    return loadFromString(Files.readString(path, StandardCharsets.UTF_8))
   }
 
-  fun loadFromPath(path: String): T {
-    return loadFromPath(Paths.get(path))
-  }
-
-  fun loadFromString(content: String): T{
+  fun loadFromString(content: String): T {
     return json.decodeFromString(serializer, content)
   }
 }
