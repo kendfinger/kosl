@@ -1,6 +1,6 @@
 plugins {
-  kotlin("jvm") version "1.5.21"
-  kotlin("plugin.serialization") version "1.5.21"
+  kotlin("jvm") version "1.5.30"
+  kotlin("plugin.serialization") version "1.5.30"
 
   application
 }
@@ -23,6 +23,8 @@ dependencies {
 
   testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.2")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.2")
+  testImplementation("org.testcontainers:testcontainers:1.16.0")
+  testImplementation("org.testcontainers:junit-jupiter:1.16.0")
   testImplementation(kotlin("test"))
 }
 
