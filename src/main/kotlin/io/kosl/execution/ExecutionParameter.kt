@@ -13,4 +13,3 @@ abstract class ExecutionParameter {
     return "${this.javaClass.simpleName}(${toCommandArgument(Paths.get(".").absolute())})"
   }
 }
-

@@ -38,36 +38,36 @@ class KoslTestWorkspace {
       return environment
     }
   }
-}
 
-class KoslTestWorkspaceDsl(val environment: KoslTestWorkspace) {
-  var spec: WorkspaceSpec? = null
+  class KoslTestWorkspaceDsl(val environment: KoslTestWorkspace) {
+    var spec: WorkspaceSpec? = null
 
-  fun service(name: String, block: KoslTestServiceDsl.() -> Unit) {
-    val test = KoslTestServiceDsl(environment, name)
-    block(test)
-    test.apply()
+    fun service(name: String, block: KoslTestServiceDsl.() -> Unit) {
+      val test = KoslTestServiceDsl(environment, name)
+      block(test)
+      test.apply()
+    }
+
+    fun apply() {
+      environment.write(
+        "kosl-workspace.json",
+        Json.encodeToString(WorkspaceSpec.serializer(), spec!!)
+      )
+    }
   }
 
-  fun apply() {
-    environment.write(
-      "kosl-workspace.json",
-      Json.encodeToString(WorkspaceSpec.serializer(), spec!!)
-    )
-  }
-}
+  class KoslTestServiceDsl(val environment: KoslTestWorkspace, val name: String) {
+    var spec: ServiceSpec? = null
 
-class KoslTestServiceDsl(val environment: KoslTestWorkspace, val name: String) {
-  var spec: ServiceSpec? = null
+    fun file(path: String, content: String) {
+      environment.write("${name}/${path}", content)
+    }
 
-  fun file(path: String, content: String) {
-    environment.write("${name}/${path}", content)
-  }
-
-  fun apply() {
-    environment.write(
-      "${name}/kosl-service.json",
-      Json.encodeToString(ServiceSpec.serializer(), spec!!)
-    )
+    fun apply() {
+      environment.write(
+        "${name}/kosl-service.json",
+        Json.encodeToString(ServiceSpec.serializer(), spec!!)
+      )
+    }
   }
 }

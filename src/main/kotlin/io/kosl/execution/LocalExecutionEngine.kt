@@ -1,14 +1,15 @@
 package io.kosl.execution
 
 import java.nio.file.Path
-import kotlin.io.path.pathString
+import kotlin.io.path.absolute
 import kotlin.system.exitProcess
 
 class LocalExecutionEngine: ExecutionEngine {
   override fun execute(command: List<ExecutionParameter>, localContextDirectory: Path) {
     val args = command.map { it.toCommandArgument(localContextDirectory) }
+
     val builder = ProcessBuilder(args)
-      .directory(localContextDirectory.toFile())
+      .directory(localContextDirectory.absolute().toFile())
       .inheritIO()
 
     val process = builder.start()
