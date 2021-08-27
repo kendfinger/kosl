@@ -25,7 +25,7 @@ dependencies {
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.2")
   testImplementation("org.testcontainers:testcontainers:1.16.0")
   testImplementation("org.testcontainers:junit-jupiter:1.16.0")
-  testImplementation(kotlin("test"))
+  testImplementation(kotlin("test", "1.5.30"))
 }
 
 tasks.test {

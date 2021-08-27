@@ -1,10 +1,5 @@
 package io.kosl.test
 
-import io.kosl.spec.BuildSpec
-import io.kosl.spec.DeploymentSpec
-import io.kosl.spec.ServiceSpec
-import io.kosl.spec.WorkspaceSpec
-import io.kosl.tool.KoslCommand
 import kotlin.io.path.absolutePathString
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -19,17 +14,12 @@ class GenerateKubernetesCommandTest {
   }
 
   @Test
-  fun `generates-kubernetes command succeeds`() {
-    val root = KoslCommand()
-    root.parse(listOf(
-      "-w",
-      environment.workspaceDirectoryPath.absolutePathString(),
-      "--dry-run",
-      "generate-kubernetes"
-    ))
-
-    root.run()
-  }
+  fun `generates-kubernetes command succeeds`() = runKoslCommand(
+    "-w",
+    environment.workspaceDirectoryPath.absolutePathString(),
+    "--dry-run",
+    "generate-kubernetes"
+  )
 
   @AfterTest
   fun after() {

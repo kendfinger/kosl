@@ -5,11 +5,11 @@ import io.kosl.spec.WorkspaceSpec
 import kotlinx.serialization.json.Json
 import java.io.File
 import java.nio.file.Files
+import java.nio.file.Path
 import kotlin.io.path.absolutePathString
 
 class KoslTestEnvironment {
-  val workspaceDirectoryPath = Files.createTempDirectory("kosl-test")
-  val json: Json = Json {}
+  val workspaceDirectoryPath: Path = Files.createTempDirectory("kosl-test")
 
   fun populate(block: KoslTestPopulate.() -> Unit) {
     val test = KoslTestPopulate(this)
@@ -52,7 +52,7 @@ class KoslTestPopulate(val environment: KoslTestEnvironment) {
   fun apply() {
     environment.write(
       "kosl-workspace.json",
-      environment.json.encodeToString(WorkspaceSpec.serializer(), spec!!)
+      Json.encodeToString(WorkspaceSpec.serializer(), spec!!)
     )
   }
 }
@@ -67,7 +67,7 @@ class KoslTestService(val environment: KoslTestEnvironment, val name: String) {
   fun apply() {
     environment.write(
       "${name}/kosl-service.json",
-      environment.json.encodeToString(ServiceSpec.serializer(), spec!!)
+      Json.encodeToString(ServiceSpec.serializer(), spec!!)
     )
   }
 }
