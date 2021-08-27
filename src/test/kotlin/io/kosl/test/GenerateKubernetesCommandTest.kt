@@ -6,7 +6,7 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 class GenerateKubernetesCommandTest {
-  lateinit var environment: KoslTestEnvironment
+  lateinit var environment: KoslTestWorkspace
 
   @BeforeTest
   fun before() {

@@ -10,6 +10,7 @@ import com.github.ajalt.clikt.parameters.types.enum
 import com.github.ajalt.clikt.parameters.types.path
 import io.kosl.context.KoslContext
 import io.kosl.build.BuildEngines
+import io.kosl.execution.ExecutionEngines
 import io.kosl.render.WorkspaceRenderer
 import io.kosl.spec.WorkspaceSpec
 import java.nio.file.Paths
@@ -25,6 +26,10 @@ class KoslCommand: CliktCommand() {
   val buildEngine by option("-b", "--build-engine", help = "Container Build Engine")
     .enum<BuildEngines> { it.id }
     .default(BuildEngines.DockerBuild)
+
+  val executionEngine by option("-e", "--execution-engine", help = "Process Execution Engine")
+    .enum<ExecutionEngines> { it.id }
+    .default(ExecutionEngines.Local)
 
   val workspaceDirectoryPath by option("-w", "--workspace", help = "Path to Workspace")
     .path(mustExist = true, canBeFile = false)
@@ -51,5 +56,6 @@ class KoslCommand: CliktCommand() {
     val workspaceRenderer = WorkspaceRenderer(context)
     context.workspaceState = workspaceRenderer.render(workspaceSpec)
     context.buildEngine = buildEngine.engine
+    context.executionEngine = executionEngine.engine
   }
 }

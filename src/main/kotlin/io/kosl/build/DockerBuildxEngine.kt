@@ -1,27 +1,29 @@
 package io.kosl.build
 
 import io.kosl.context.KoslContext
-import kotlin.io.path.absolutePathString
+import io.kosl.execution.CommandName
+import io.kosl.execution.RawArgument
+import io.kosl.execution.RelativePath
 
 class DockerBuildxEngine: BuildEngine {
   override fun process(context: KoslContext, job: BuildEngineJob) {
     val command = mutableListOf(
-      "docker",
-      "buildx",
-      "build",
-      "-t",
-      "${job.targetImageName}:${job.targetImageTag}",
-      "-f",
-      job.buildFilePath.absolutePathString()
+      CommandName("docker"),
+      RawArgument("buildx"),
+      RawArgument("build"),
+      RawArgument("-t"),
+      RawArgument("${job.targetImageName}:${job.targetImageTag}"),
+      RawArgument("-f"),
+      RelativePath(job.buildFilePath)
     )
 
     if (job.push) {
-      command.add("--push")
+      command.add(RawArgument("--push"))
     } else {
-      command.add("--load")
+      command.add(RawArgument("--load"))
     }
 
-    command.add(job.contextDirectoryPath.absolutePathString())
+    command.add(RelativePath(job.contextDirectoryPath))
     context.executeInteractiveProcess(command)
   }
 }

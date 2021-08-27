@@ -1,20 +1,22 @@
 package io.kosl.context
 
 import io.kosl.build.BuildEngine
+import io.kosl.execution.ExecutionEngine
+import io.kosl.execution.ExecutionParameter
 import io.kosl.state.WorkspaceState
 import java.nio.file.Path
-import kotlin.system.exitProcess
 
 class KoslContext {
   lateinit var workspaceDirectoryPath: Path
   lateinit var workspaceState: WorkspaceState
   lateinit var buildEngine: BuildEngine
   lateinit var tag: String
+  lateinit var executionEngine: ExecutionEngine
 
   var overrideImagePrefix: String? = null
   var isDryRun: Boolean = false
 
-  fun logCommandExecution(command: List<String>, ran: CommandRunState = CommandRunState.Automatic) {
+  fun logCommandExecution(command: List<ExecutionParameter>, ran: CommandRunState = CommandRunState.Automatic) {
     val prefix = when (ran) {
       CommandRunState.Automatic -> if (isDryRun) {
         "(dry) "
@@ -26,24 +28,16 @@ class KoslContext {
       CommandRunState.Executed -> ""
     }
 
-    println("${prefix}$ ${command.joinToString(" ")}")
+    println("${prefix}$ ${command.joinToString(" ") { it.toCommandArgument(workspaceDirectoryPath) }}")
   }
 
-  fun executeInteractiveProcess(command: List<String>, run: CommandRunState = CommandRunState.Automatic) {
+  fun executeInteractiveProcess(command: List<ExecutionParameter>, run: CommandRunState = CommandRunState.Automatic) {
     logCommandExecution(command, ran = run)
     if ((run == CommandRunState.Automatic && isDryRun) || run == CommandRunState.DryRun) {
       return
     }
 
-    val builder = ProcessBuilder(command)
-      .inheritIO()
-
-    val process = builder.start()
-    val exitCode = process.waitFor()
-
-    if (exitCode != 0) {
-      exitProcess(exitCode)
-    }
+    executionEngine.execute(command, workspaceDirectoryPath)
   }
 
   enum class CommandRunState {

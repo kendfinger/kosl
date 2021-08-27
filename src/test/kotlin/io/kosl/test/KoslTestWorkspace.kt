@@ -8,11 +8,11 @@ import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.io.path.absolutePathString
 
-class KoslTestEnvironment {
+class KoslTestWorkspace {
   val workspaceDirectoryPath: Path = Files.createTempDirectory("kosl-test")
 
-  fun populate(block: KoslTestPopulate.() -> Unit) {
-    val test = KoslTestPopulate(this)
+  fun populate(block: KoslTestWorkspaceDsl.() -> Unit) {
+    val test = KoslTestWorkspaceDsl(this)
     block(test)
     test.apply()
   }
@@ -32,19 +32,19 @@ class KoslTestEnvironment {
   }
 
   companion object {
-    fun populated(block: KoslTestPopulate.() -> Unit): KoslTestEnvironment {
-      val environment = KoslTestEnvironment()
+    fun populated(block: KoslTestWorkspaceDsl.() -> Unit): KoslTestWorkspace {
+      val environment = KoslTestWorkspace()
       environment.populate(block)
       return environment
     }
   }
 }
 
-class KoslTestPopulate(val environment: KoslTestEnvironment) {
+class KoslTestWorkspaceDsl(val environment: KoslTestWorkspace) {
   var spec: WorkspaceSpec? = null
 
-  fun service(name: String, block: KoslTestService.() -> Unit) {
-    val test = KoslTestService(environment, name)
+  fun service(name: String, block: KoslTestServiceDsl.() -> Unit) {
+    val test = KoslTestServiceDsl(environment, name)
     block(test)
     test.apply()
   }
@@ -57,7 +57,7 @@ class KoslTestPopulate(val environment: KoslTestEnvironment) {
   }
 }
 
-class KoslTestService(val environment: KoslTestEnvironment, val name: String) {
+class KoslTestServiceDsl(val environment: KoslTestWorkspace, val name: String) {
   var spec: ServiceSpec? = null
 
   fun file(path: String, content: String) {

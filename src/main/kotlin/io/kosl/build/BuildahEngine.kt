@@ -1,27 +1,29 @@
 package io.kosl.build
 
 import io.kosl.context.KoslContext
-import kotlin.io.path.absolutePathString
+import io.kosl.execution.CommandName
+import io.kosl.execution.RawArgument
+import io.kosl.execution.RelativePath
 
 class BuildahEngine: BuildEngine {
   override fun process(context: KoslContext, job: BuildEngineJob) {
     val buildCommand = mutableListOf(
-      "buildah",
-      "bud",
-      "-t",
-      "${job.targetImageName}:${job.targetImageTag}",
-      "-f",
-      job.buildFilePath.absolutePathString(),
-      job.contextDirectoryPath.absolutePathString()
+      CommandName("buildah"),
+      RawArgument("bud"),
+      RawArgument("-t"),
+      RawArgument("${job.targetImageName}:${job.targetImageTag}"),
+      RawArgument("-f"),
+      RelativePath(job.buildFilePath),
+      RelativePath(job.contextDirectoryPath)
     )
 
     context.executeInteractiveProcess(buildCommand)
 
     if (job.push) {
       val pushCommand = mutableListOf(
-        "buildah",
-        "push",
-        "${job.targetImageName}:${job.targetImageTag}"
+        CommandName("buildah"),
+        RawArgument("push"),
+        RawArgument("${job.targetImageName}:${job.targetImageTag}")
       )
 
       context.executeInteractiveProcess(pushCommand)
