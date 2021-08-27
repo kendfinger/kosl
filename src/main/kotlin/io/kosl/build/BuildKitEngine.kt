@@ -1,16 +1,13 @@
 package io.kosl.build
 
 import io.kosl.context.KoslContext
-import io.kosl.execution.CommandName
-import io.kosl.execution.JoinedParameter
-import io.kosl.execution.RawArgument
-import io.kosl.execution.RelativePath
+import io.kosl.execution.*
 
 class BuildKitEngine: BuildEngine {
   override fun process(context: KoslContext, job: BuildEngineJob) {
     val command = mutableListOf(
       CommandName("buildctl"),
-      RawArgument("build"),
+      SubCommandName("build"),
       RawArgument("--progress"),
       RawArgument("plain"),
       RawArgument("--frontend"),

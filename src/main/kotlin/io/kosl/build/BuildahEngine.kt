@@ -4,12 +4,13 @@ import io.kosl.context.KoslContext
 import io.kosl.execution.CommandName
 import io.kosl.execution.RawArgument
 import io.kosl.execution.RelativePath
+import io.kosl.execution.SubCommandName
 
 class BuildahEngine: BuildEngine {
   override fun process(context: KoslContext, job: BuildEngineJob) {
     val buildCommand = mutableListOf(
       CommandName("buildah"),
-      RawArgument("bud"),
+      SubCommandName("bud"),
       RawArgument("-t"),
       RawArgument("${job.targetImageName}:${job.targetImageTag}"),
       RawArgument("-f"),
@@ -22,7 +23,7 @@ class BuildahEngine: BuildEngine {
     if (job.push) {
       val pushCommand = mutableListOf(
         CommandName("buildah"),
-        RawArgument("push"),
+        SubCommandName("push"),
         RawArgument("${job.targetImageName}:${job.targetImageTag}")
       )
 

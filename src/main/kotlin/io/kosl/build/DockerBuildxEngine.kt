@@ -4,13 +4,14 @@ import io.kosl.context.KoslContext
 import io.kosl.execution.CommandName
 import io.kosl.execution.RawArgument
 import io.kosl.execution.RelativePath
+import io.kosl.execution.SubCommandName
 
 class DockerBuildxEngine: BuildEngine {
   override fun process(context: KoslContext, job: BuildEngineJob) {
     val command = mutableListOf(
       CommandName("docker"),
-      RawArgument("buildx"),
-      RawArgument("build"),
+      SubCommandName("buildx"),
+      SubCommandName("build"),
       RawArgument("-t"),
       RawArgument("${job.targetImageName}:${job.targetImageTag}"),
       RawArgument("-f"),

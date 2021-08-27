@@ -1,6 +1,7 @@
 package io.kosl.execution
 
 import java.nio.file.Path
+import kotlin.io.path.pathString
 import kotlin.system.exitProcess
 
 class LocalExecutionEngine: ExecutionEngine {

@@ -43,11 +43,15 @@ class KoslCommand: CliktCommand() {
   val isDryRun by option("--dry-run", help = "Perform a Dry Run")
     .flag()
 
+  val shouldAnalyzeExecution by option("--analyze-execution-plan", help = "Enable Execution Plan Analysis")
+    .flag()
+
   val context by findOrSetObject { KoslContext() }
 
   override fun run() {
     context.workspaceDirectoryPath = workspaceDirectoryPath
     context.isDryRun = isDryRun
+    context.shouldAnalyzeExecution = shouldAnalyzeExecution
     context.overrideImagePrefix = overrideImagePrefix
     context.tag = tag
 
