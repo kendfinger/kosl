@@ -1,7 +1,8 @@
 package io.kosl.execution
 
+import io.kosl.execution.parameter.ExecutionParameter
 import java.nio.file.Path
 
 interface ExecutionEngine {
-  fun execute(command: List<ExecutionParameter>, localContextDirectory: Path)
+  fun execute(job: ExecutionJob)
 }

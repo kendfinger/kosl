@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
   kotlin("jvm") version "1.5.30"
   kotlin("plugin.serialization") version "1.5.30"
@@ -30,8 +32,14 @@ dependencies {
   testImplementation(kotlin("test", "1.5.30"))
 }
 
+tasks.withType<KotlinCompile> {
+  kotlinOptions.jvmTarget = "11"
+}
+
 tasks.test {
   useJUnitPlatform()
+  reports.html.required.set(true)
+  reports.junitXml.required.set(true)
 }
 
 application {

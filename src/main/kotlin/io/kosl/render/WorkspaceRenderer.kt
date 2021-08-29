@@ -13,7 +13,7 @@ class WorkspaceRenderer(val context: KoslContext) {
       val serviceDirectoryPath = context.workspaceDirectoryPath.resolve(serviceName)
       val serviceSpecPath = serviceDirectoryPath.resolve("kosl-service.json")
       val service = ServiceSpec.loadFromPath(serviceSpecPath)
-      val serviceState = ServiceState(context, spec, service, serviceDirectoryPath)
+      val serviceState = ServiceState(context, service, serviceDirectoryPath)
       serviceStates.add(serviceState)
     }
     return WorkspaceState(

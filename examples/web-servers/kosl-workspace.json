@@ -1,5 +1,5 @@
 {
-  "defaultImagePrefix": "ghcr.io/kendfinger/kosl/examples/web-servers",
+  "defaultImagePrefix": "registry.fork.run/kosl/kosl/examples/web-servers",
   "services": [
     "dart-server",
     "python-server",

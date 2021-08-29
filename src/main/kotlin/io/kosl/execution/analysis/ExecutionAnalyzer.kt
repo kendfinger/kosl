@@ -1,9 +1,13 @@
-package io.kosl.execution
+package io.kosl.execution.analysis
 
+import io.kosl.execution.ExecutionJob
+import io.kosl.execution.parameter.CommandName
+import io.kosl.execution.parameter.RelativePath
+import io.kosl.execution.parameter.SubCommandName
 import java.nio.file.Path
 
-class ExecutionAnalyzer(val command: List<ExecutionParameter>) {
-  private val expanded = command.expand()
+class ExecutionAnalyzer(val job: ExecutionJob) {
+  private val expanded = job.expandSubParameters()
 
   fun analyze(): ExecutionAnalysis = ExecutionAnalysis(
     findRequiredPaths(),

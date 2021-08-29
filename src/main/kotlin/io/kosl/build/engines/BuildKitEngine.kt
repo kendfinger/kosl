@@ -1,7 +1,9 @@
-package io.kosl.build
+package io.kosl.build.engines
 
+import io.kosl.build.BuildEngine
+import io.kosl.build.BuildEngineJob
 import io.kosl.context.KoslContext
-import io.kosl.execution.*
+import io.kosl.execution.parameter.*
 
 class BuildKitEngine: BuildEngine {
   override fun process(context: KoslContext, job: BuildEngineJob) {

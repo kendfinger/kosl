@@ -5,12 +5,10 @@ import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder
 import io.kosl.build.BuildEngineJob
 import io.kosl.context.KoslContext
 import io.kosl.spec.ServiceSpec
-import io.kosl.spec.WorkspaceSpec
 import java.nio.file.Path
 
 class ServiceState(
   val context: KoslContext,
-  val workspaceSpec: WorkspaceSpec,
   val spec: ServiceSpec,
   val serviceDirectoryPath: Path,
 ) {

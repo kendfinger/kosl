@@ -1,4 +1,4 @@
-package io.kosl.execution
+package io.kosl.execution.analysis
 
 import java.nio.file.Path
 

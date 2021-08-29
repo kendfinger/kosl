@@ -1,16 +1,18 @@
-package io.kosl.build
+package io.kosl.build.engines
 
+import io.kosl.build.BuildEngine
+import io.kosl.build.BuildEngineJob
 import io.kosl.context.KoslContext
-import io.kosl.execution.CommandName
-import io.kosl.execution.RawArgument
-import io.kosl.execution.RelativePath
-import io.kosl.execution.SubCommandName
+import io.kosl.execution.parameter.CommandName
+import io.kosl.execution.parameter.RawArgument
+import io.kosl.execution.parameter.RelativePath
+import io.kosl.execution.parameter.SubCommandName
 
-class BuildahEngine: BuildEngine {
+class DockerBuildEngine: BuildEngine {
   override fun process(context: KoslContext, job: BuildEngineJob) {
     val buildCommand = mutableListOf(
-      CommandName("buildah"),
-      SubCommandName("bud"),
+      CommandName("docker"),
+      SubCommandName("build"),
       RawArgument("-t"),
       RawArgument("${job.targetImageName}:${job.targetImageTag}"),
       RawArgument("-f"),
@@ -22,7 +24,7 @@ class BuildahEngine: BuildEngine {
 
     if (job.push) {
       val pushCommand = mutableListOf(
-        CommandName("buildah"),
+        CommandName("docker"),
         SubCommandName("push"),
         RawArgument("${job.targetImageName}:${job.targetImageTag}")
       )

@@ -1,9 +1,9 @@
 package io.kosl.context
 
 import io.kosl.build.BuildEngine
-import io.kosl.execution.ExecutionAnalyzer
 import io.kosl.execution.ExecutionEngine
-import io.kosl.execution.ExecutionParameter
+import io.kosl.execution.ExecutionJob
+import io.kosl.execution.parameter.ExecutionParameter
 import io.kosl.state.WorkspaceState
 import java.nio.file.Path
 import kotlin.io.path.pathString
@@ -19,8 +19,8 @@ class KoslContext {
   var isDryRun: Boolean = false
   var shouldAnalyzeExecution: Boolean = false
 
-  fun logCommandExecution(command: List<ExecutionParameter>, ran: CommandRunState = CommandRunState.Automatic) {
-    val prefix = when (ran) {
+  fun logCommandExecution(job: ExecutionJob, run: CommandRunState = CommandRunState.Automatic) {
+    val prefix = when (run) {
       CommandRunState.Automatic -> if (isDryRun) {
         "(dry) "
       } else {
@@ -31,17 +31,19 @@ class KoslContext {
       CommandRunState.Executed -> ""
     }
 
-    println("${prefix}$ ${command.joinToString(" ") { it.toCommandArgument(workspaceDirectoryPath) }}")
+    println("${prefix}$ ${job.expandCommandArguments().joinToString(" ")}")
   }
 
   fun executeInteractiveProcess(command: List<ExecutionParameter>, run: CommandRunState = CommandRunState.Automatic) {
-    logCommandExecution(command, ran = run)
+    val job = ExecutionJob(command, workspaceDirectoryPath)
+
+    logCommandExecution(job, run = run)
     if ((run == CommandRunState.Automatic && isDryRun) || run == CommandRunState.DryRun) {
       return
     }
 
     if (shouldAnalyzeExecution) {
-      val execution = ExecutionAnalyzer(command).analyze()
+      val execution = job.analyze()
       execution.requiredFilePaths.forEach {
         println("Execution Requires Path: ${it.pathString}")
       }
@@ -55,7 +57,7 @@ class KoslContext {
       }
     }
 
-    executionEngine.execute(command, workspaceDirectoryPath)
+    executionEngine.execute(job)
   }
 
   enum class CommandRunState {
