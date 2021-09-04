@@ -4,7 +4,7 @@ import io.kosl.execution.ExecutionJob
 import io.kosl.execution.parameter.CommandName
 import io.kosl.execution.parameter.RelativePath
 import io.kosl.execution.parameter.SubCommandName
-import java.nio.file.Path
+import io.kosl.io.Path
 
 class ExecutionAnalyzer(val job: ExecutionJob) {
   private val expanded = job.expandSubParameters()

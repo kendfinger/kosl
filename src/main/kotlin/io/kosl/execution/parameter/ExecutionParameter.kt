@@ -1,7 +1,6 @@
 package io.kosl.execution.parameter
 
-import java.nio.file.Path
-import java.nio.file.Paths
+import io.kosl.io.Path
 import kotlin.io.path.absolute
 
 abstract class ExecutionParameter {
@@ -10,6 +9,6 @@ abstract class ExecutionParameter {
   open fun listSubParameters(): List<ExecutionParameter> = emptyList()
 
   override fun toString(): String {
-    return "${this.javaClass.simpleName}(${toCommandArgument(Paths.get(".").absolute())})"
+    return "${this.javaClass.simpleName}(${toCommandArgument(Path.of(".").absolute())})"
   }
 }

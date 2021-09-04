@@ -4,7 +4,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
-import java.nio.file.Path
+import io.kosl.io.Path
 
 open class KoslSpec<T>(private val serializer: KSerializer<T>) {
   fun loadFromPath(path: Path): T {

@@ -11,9 +11,9 @@ import com.github.ajalt.clikt.parameters.types.path
 import io.kosl.context.KoslContext
 import io.kosl.build.BuildEngines
 import io.kosl.execution.ExecutionEngines
+import io.kosl.io.Path
 import io.kosl.render.WorkspaceRenderer
 import io.kosl.spec.WorkspaceSpec
-import java.nio.file.Paths
 
 class KoslCommand: CliktCommand() {
   init {
@@ -33,7 +33,7 @@ class KoslCommand: CliktCommand() {
 
   val workspaceDirectoryPath by option("-w", "--workspace", help = "Path to Workspace")
     .path(mustExist = true, canBeFile = false)
-    .default(Paths.get(""))
+    .default(Path.of(""))
 
   val tag by option("-t", "--tag", help = "Image Tag")
     .default("latest")

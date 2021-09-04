@@ -4,8 +4,8 @@ import io.kosl.build.BuildEngine
 import io.kosl.execution.ExecutionEngine
 import io.kosl.execution.ExecutionJob
 import io.kosl.execution.parameter.ExecutionParameter
+import io.kosl.io.Path
 import io.kosl.state.WorkspaceState
-import java.nio.file.Path
 import kotlin.io.path.pathString
 
 class KoslContext {

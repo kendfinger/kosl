@@ -3,7 +3,7 @@ package io.kosl.execution
 import io.kosl.execution.analysis.ExecutionAnalysis
 import io.kosl.execution.analysis.ExecutionAnalyzer
 import io.kosl.execution.parameter.ExecutionParameter
-import java.nio.file.Path
+import io.kosl.io.Path
 
 class ExecutionJob(
   val command: List<ExecutionParameter>,

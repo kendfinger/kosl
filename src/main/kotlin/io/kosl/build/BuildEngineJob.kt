@@ -1,6 +1,6 @@
 package io.kosl.build
 
-import java.nio.file.Path
+import io.kosl.io.Path
 
 class BuildEngineJob(
   val contextDirectoryPath: Path,

@@ -1,6 +1,6 @@
 package io.kosl.execution.parameter
 
-import java.nio.file.Path
+import io.kosl.io.Path
 import kotlin.io.path.pathString
 import kotlin.io.path.relativeTo
 

@@ -1,6 +1,6 @@
 package io.kosl.execution.analysis
 
-import java.nio.file.Path
+import io.kosl.io.Path
 
 class ExecutionAnalysis(
   val requiredFilePaths: List<Path>,
