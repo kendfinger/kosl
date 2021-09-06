@@ -17,7 +17,7 @@ fun kotlinx(name: String, version: String): String = "org.jetbrains.kotlinx:kotl
 
 dependencies {
   api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
-  api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
+  api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
   api("io.fabric8:kubernetes-client:5.7.2")
 
   implementation("com.github.ajalt.clikt:clikt:3.2.0")
