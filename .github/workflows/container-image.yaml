@@ -19,7 +19,7 @@ jobs:
     - name: Setup Docker BuildKit
       uses: docker/setup-buildx-action@v1
     - name: Setup Docker Metadata
-      uses: docker/metadata-action@v3
+      uses: docker/metadata-action@v4
       id: docker_meta
       with:
         images: ghcr.io/kendfinger/kosl
